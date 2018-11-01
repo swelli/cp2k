@@ -1,0 +1,35 @@
+# Based on https://www.cp2k.org/howto:compile_on_windows_with_cygwin
+# Tested with:
+# - Devel:
+#    - bison 3.0.4-1
+#    - byacc 20170430-1
+#    - gcc-fortran 7.3.0-3
+#    - gcc-g++ 7.3.0-3
+#    - make 4.2.1-2
+# - Libs:
+#    - liblapack0 3.8.0-1
+#    - liblapack-devel 3.8.0-1
+#    - libopenblas 0.3.3-1
+#    - libquadmath0 7.3.0-3
+#    - libfftw3_3 3.3.8-1
+#    - libfftw3-devel 3.3.8-1
+
+CC          = gcc
+CPP         =
+FC          = gfortran
+LD          = gfortran
+AR          = ar -r
+
+DFLAGS      = -D__F2008 -D__GFORTRAN -D__FFTSG -D__FFTW3
+#                -D__LIBINT -D__LIBXC -D__LIBXSMM\
+              # -D__LIBINT_MAX_AM=7 -D__LIBDERIV_MAX_AM1=6 -D__MAX_CONTR=4
+CPPFLAGS    =
+FCFLAGS     = $(DFLAGS) -O3 -ffast-math -ffree-form -ffree-line-length-none \
+              -ftree-vectorize -funroll-loops -mtune=native -std=f2008 \
+              -I/usr/include
+LDFLAGS     = $(FCFLAGS)
+LIBS        = -lfftw3 \
+              -llapack \
+              -lblas \
+              -ldl \
+              -lpthread
